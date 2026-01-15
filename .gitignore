@@ -1,0 +1,14 @@
+config/db.php
+
+sessions/
+cache/
+
+*.log
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+*.sql
+*.zip
