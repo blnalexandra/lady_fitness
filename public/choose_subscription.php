@@ -75,12 +75,12 @@ if (isset($_POST['subscribe'])) {
     $type = $_POST['type'];
     $userId = $_SESSION['user_id'];
 
-    $stmt = $conn->prepare("DELETE FROM subscriptions WHERE user_id = ?");
+    $stmt = $conn->prepare("DELETE FROM subscriptions WHERE user_id = ?");      //sterge abonamentul vechi
     $stmt->bind_param("i", $userId);
     $stmt->execute();
     $stmt->close();
     
-    $stmt = $conn->prepare("SELECT description FROM subscriptions WHERE type = ? AND user_id IS NULL LIMIT 1");
+    $stmt = $conn->prepare("SELECT description FROM subscriptions WHERE type = ? AND user_id IS NULL LIMIT 1");       //descrierea abonamentului
     $stmt->bind_param("s", $type);
     $stmt->execute();
     $stmt->bind_result($description);
@@ -88,20 +88,20 @@ if (isset($_POST['subscribe'])) {
     $stmt->close();
 
     
-    $stmt = $conn->prepare("INSERT INTO subscriptions (user_id, type, description) VALUES (?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO subscriptions (user_id, type, description) VALUES (?, ?, ?)");        //inseareaza abonamentul ales
     $stmt->bind_param("iss", $userId, $type, $description);
     $stmt->execute();
     $stmt->close();
     
 
-    $stmt = $conn->prepare("SELECT type, description FROM subscriptions WHERE user_id = ?");
+    $stmt = $conn->prepare("SELECT type, description FROM subscriptions WHERE user_id = ?");        //verifica aboanmentul in bd
     $stmt->bind_param("i", $userId);
     $stmt->execute();
     $stmt->bind_result($dbType, $dbDesc);
     $stmt->fetch();
     $stmt->close();
     
-    $_SESSION['subscription'] = $type;
+    $_SESSION['subscription'] = $type;         //actualizeaza sesiunea
     
     echo "<p class='success-message'>Abonament activat cu succes!</p>";
 }
